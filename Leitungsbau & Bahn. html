@@ -1,0 +1,2940 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leitungsbau & Bahn - Checklisten App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #003d82;
+            --secondary: #0066cc;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --border: #dee2e6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: var(--light);
+            color: var(--dark);
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .item-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .item-description {
+            background: #f0f7ff;
+            padding: 12px;
+            border-left: 4px solid var(--secondary);
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .evidence-section {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .evidence-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 10px 15px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            background: var(--primary);
+        }
+
+        .file-preview {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .file-item {
+            position: relative;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .file-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .file-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .file-remove:hover {
+            background: darkred;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #002d5f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 61, 130, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-open {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-compliant {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-non-compliant {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-not-applicable {
+            background: #e2e3e5;
+            color: #41464b;
+        }
+
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+
+        .summary-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: var(--dark);
+            margin-top: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--dark);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .location-info {
+            background: #e7f3ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .export-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--success);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--danger);
+        }
+
+        .warning-message {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .separator {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+
+        @media print {
+            header, .tabs, .export-section, .buttons {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            .form-section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid var(--border);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--light);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .conditional-field {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .conditional-field.show {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab-btn {
+                width: 100%;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📋 Leitungsbau & Bahn - Checklisten App</h1>
+            <div class="header-info">
+                Digitale Sicherheitsprüfung für E31-E34 Projekte
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Übersicht / Summary -->
+        <div class="summary">
+            <h2>📊 Projektübersicht</h2>
+            <div class="form-row">
+                <div>
+                    <label>Projektname:</label>
+                    <input type="text" id="projectName" placeholder="z.B. Neubau Hochspannungsleitung">
+                </div>
+                <div>
+                    <label>Bereich:</label>
+                    <input type="text" id="projectArea" placeholder="z.B. Süd-Region">
+                </div>
+            </div>
+            <div class="summary-grid" id="summaryGrid">
+                <div class="summary-card">
+                    <div class="summary-number" id="totalItems">0</div>
+                    <div class="summary-label">Gesamt Elemente</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="compliantItems">0</div>
+                    <div class="summary-label">Konform</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="nonCompliantItems">0</div>
+                    <div class="summary-label">Nicht Konform</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number" id="openItems">0</div>
+                    <div class="summary-label">Offen</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs für verschiedene Module -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('e31')">E31 - Freileitungsbau</button>
+            <button class="tab-btn" onclick="switchTab('e32')">E32 - Kabeltrasse</button>
+            <button class="tab-btn" onclick="switchTab('e33')">E33 - Hochspannung</button>
+            <button class="tab-btn" onclick="switchTab('e34')">E34 - Gleisbereich</button>
+            <button class="tab-btn" onclick="switchTab('export')">📤 Export</button>
+        </div>
+
+        <!-- E31: Freileitungsbau / Mastmontage -->
+        <div id="e31" class="tab-content active">
+            <div class="form-section">
+                <div class="item-title">E31 · Freileitungsbau / Mastmontage</div>
+                <div class="item-description">
+                    <strong>Modul-Info:</strong> Aktivierung durch Bauelement "Ja". Bezug: BetrSichV §§3–4; TRBS 2111 und 2121
+                </div>
+
+                <!-- Item 01 -->
+                <div class="separator"></div>
+                <div class="item-title">01 Mastmontage und Netzschnittstelle planen [Planung]</div>
+                <div class="item-description">
+                    Montagezustände, Hebeverfahren, elektrische Einflüsse, Wettergrenzen und Höhenrettung mit Netzbetreiber abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_01_applicable_yes" name="e31_01_applicable" value="yes" onchange="updateE31_01()">
+                            <label for="e31_01_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_01_applicable_no" name="e31_01_applicable" value="no" onchange="updateE31_01()">
+                            <label for="e31_01_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_01_applicable_unclear" name="e31_01_applicable" value="unclear" onchange="updateE31_01()">
+                            <label for="e31_01_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e31_01_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_01_status_open" name="e31_01_status" value="open" onchange="updateE31_01()">
+                                <label for="e31_01_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_01_status_compliant" name="e31_01_status" value="compliant" onchange="updateE31_01()">
+                                <label for="e31_01_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_01_status_non_compliant" name="e31_01_status" value="non_compliant" onchange="updateE31_01()">
+                                <label for="e31_01_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e31_01_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e31_01_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e31_01_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e31_01_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e31_01_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e31_01_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e31_01_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e31_01')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e31_01_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e31_01_lat">-</span><br>
+                                Länge: <span id="e31_01_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e31_01_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e31_01_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e31_01')">
+                            </div>
+                            <div class="file-preview" id="e31_01_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e31_01_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 02 -->
+            <div class="form-section">
+                <div class="item-title">02 Mastarbeitsplatz zur Montage freigeben [Ausführung]</div>
+                <div class="item-description">
+                    Standsicherheit, Sicherungssysteme, Sperrzone und dokumentierten elektrischen Anlagenzustand kontrollieren.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_02_applicable_yes" name="e31_02_applicable" value="yes" onchange="updateE31_02()">
+                            <label for="e31_02_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_02_applicable_no" name="e31_02_applicable" value="no" onchange="updateE31_02()">
+                            <label for="e31_02_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_02_applicable_unclear" name="e31_02_applicable" value="unclear" onchange="updateE31_02()">
+                            <label for="e31_02_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e31_02_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_02_status_open" name="e31_02_status" value="open" onchange="updateE31_02()">
+                                <label for="e31_02_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_02_status_compliant" name="e31_02_status" value="compliant" onchange="updateE31_02()">
+                                <label for="e31_02_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_02_status_non_compliant" name="e31_02_status" value="non_compliant" onchange="updateE31_02()">
+                                <label for="e31_02_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e31_02_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e31_02_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e31_02_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e31_02_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e31_02_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e31_02_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e31_02_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e31_02')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e31_02_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e31_02_lat">-</span><br>
+                                Länge: <span id="e31_02_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e31_02_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e31_02_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e31_02')">
+                            </div>
+                            <div class="file-preview" id="e31_02_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e31_02_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 03 -->
+            <div class="form-section">
+                <div class="item-title">03 Gemeinsame Einrichtungen und Übergabe prüfen [Planung]</div>
+                <div class="item-description">
+                    Für Montagesperrbereich, Seitenschutz, sichere Zugänge Standort, Nutzer, Zeitfenster, Bereitstellung/Pflege und Prüfverantwortung mit den Folgegewerken abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_03_applicable_yes" name="e31_03_applicable" value="yes" onchange="updateE31_03()">
+                            <label for="e31_03_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_03_applicable_no" name="e31_03_applicable" value="no" onchange="updateE31_03()">
+                            <label for="e31_03_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_03_applicable_unclear" name="e31_03_applicable" value="unclear" onchange="updateE31_03()">
+                            <label for="e31_03_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e31_03_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_03_status_open" name="e31_03_status" value="open" onchange="updateE31_03()">
+                                <label for="e31_03_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_03_status_compliant" name="e31_03_status" value="compliant" onchange="updateE31_03()">
+                                <label for="e31_03_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_03_status_non_compliant" name="e31_03_status" value="non_compliant" onchange="updateE31_03()">
+                                <label for="e31_03_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e31_03_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e31_03_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e31_03_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e31_03_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e31_03_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e31_03_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e31_03_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e31_03')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e31_03_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e31_03_lat">-</span><br>
+                                Länge: <span id="e31_03_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e31_03_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e31_03_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e31_03')">
+                            </div>
+                            <div class="file-preview" id="e31_03_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e31_03_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 04 -->
+            <div class="form-section">
+                <div class="item-title">04 Spätere Arbeiten und Zugänge prüfen (RAB 32) [Planung]</div>
+                <div class="item-description">
+                    Wartungszugänge, Anschlag-/Sicherungseinrichtungen und Montagebesonderheiten dokumentieren. Bauteil, vorhersehbare Tätigkeit, sicheren Zugang, Intervall und Empfänger konkret abgleichen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_04_applicable_yes" name="e31_04_applicable" value="yes" onchange="updateE31_04()">
+                            <label for="e31_04_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_04_applicable_no" name="e31_04_applicable" value="no" onchange="updateE31_04()">
+                            <label for="e31_04_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e31_04_applicable_unclear" name="e31_04_applicable" value="unclear" onchange="updateE31_04()">
+                            <label for="e31_04_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e31_04_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_04_status_open" name="e31_04_status" value="open" onchange="updateE31_04()">
+                                <label for="e31_04_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_04_status_compliant" name="e31_04_status" value="compliant" onchange="updateE31_04()">
+                                <label for="e31_04_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e31_04_status_non_compliant" name="e31_04_status" value="non_compliant" onchange="updateE31_04()">
+                                <label for="e31_04_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e31_04_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e31_04_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e31_04_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e31_04_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e31_04_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e31_04_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e31_04_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e31_04')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e31_04_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e31_04_lat">-</span><br>
+                                Länge: <span id="e31_04_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e31_04_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e31_04_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e31_04')">
+                            </div>
+                            <div class="file-preview" id="e31_04_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e31_04_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="separator"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><strong>Prüfung / Freigabe:</strong></label>
+                        <input type="text" id="e31_signature" placeholder="Name und Titel">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Datum / Unterschrift:</strong></label>
+                        <input type="date" id="e31_signature_date">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn-success" onclick="saveE31()">💾 E31 Speichern</button>
+                    <button class="btn-secondary" onclick="resetE31()">🔄 Zurücksetzen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- E32: Kabeltrasse / Kabelzug -->
+        <div id="e32" class="tab-content">
+            <div class="form-section">
+                <div class="item-title">E32 · Kabeltrasse / Kabelzug</div>
+                <div class="item-description">
+                    <strong>Modul-Info:</strong> Aktivierung durch Bauelement "Ja". Bezug: DGUV Vorschrift 38, Abschnitt Baugruben/Gräben; BetrSichV §§3–4
+                </div>
+
+                <!-- Item 01 -->
+                <div class="separator"></div>
+                <div class="item-title">01 Kabelzug und Querungen koordinieren [Planung]</div>
+                <div class="item-description">
+                    Zugkräfte, Trommelplätze, Leitungsbestand, Querungen, Gruben und Verkehrswege festlegen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_01_applicable_yes" name="e32_01_applicable" value="yes" onchange="updateE32_01()">
+                            <label for="e32_01_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_01_applicable_no" name="e32_01_applicable" value="no" onchange="updateE32_01()">
+                            <label for="e32_01_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_01_applicable_unclear" name="e32_01_applicable" value="unclear" onchange="updateE32_01()">
+                            <label for="e32_01_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e32_01_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_01_status_open" name="e32_01_status" value="open" onchange="updateE32_01()">
+                                <label for="e32_01_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_01_status_compliant" name="e32_01_status" value="compliant" onchange="updateE32_01()">
+                                <label for="e32_01_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_01_status_non_compliant" name="e32_01_status" value="non_compliant" onchange="updateE32_01()">
+                                <label for="e32_01_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e32_01_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e32_01_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e32_01_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e32_01_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e32_01_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e32_01_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e32_01_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e32_01')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e32_01_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e32_01_lat">-</span><br>
+                                Länge: <span id="e32_01_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e32_01_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e32_01_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e32_01')">
+                            </div>
+                            <div class="file-preview" id="e32_01_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e32_01_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 02 -->
+            <div class="form-section">
+                <div class="item-title">02 Zugstrecke vor Beginn kontrollieren [Ausführung]</div>
+                <div class="item-description">
+                    Trommelsicherung, Kommunikation, Absperrungen, sichere Gruben und Übergaben prüfen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_02_applicable_yes" name="e32_02_applicable" value="yes" onchange="updateE32_02()">
+                            <label for="e32_02_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_02_applicable_no" name="e32_02_applicable" value="no" onchange="updateE32_02()">
+                            <label for="e32_02_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_02_applicable_unclear" name="e32_02_applicable" value="unclear" onchange="updateE32_02()">
+                            <label for="e32_02_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e32_02_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_02_status_open" name="e32_02_status" value="open" onchange="updateE32_02()">
+                                <label for="e32_02_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_02_status_compliant" name="e32_02_status" value="compliant" onchange="updateE32_02()">
+                                <label for="e32_02_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_02_status_non_compliant" name="e32_02_status" value="non_compliant" onchange="updateE32_02()">
+                                <label for="e32_02_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e32_02_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e32_02_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e32_02_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e32_02_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e32_02_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e32_02_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e32_02_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e32_02')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e32_02_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e32_02_lat">-</span><br>
+                                Länge: <span id="e32_02_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e32_02_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e32_02_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e32_02')">
+                            </div>
+                            <div class="file-preview" id="e32_02_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e32_02_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 03 -->
+            <div class="form-section">
+                <div class="item-title">03 Gemeinsame Einrichtungen und Übergabe prüfen [Planung]</div>
+                <div class="item-description">
+                    Für Grubensicherung, sichere Zugänge, Randabsperrung und getrennte Verkehrswege Standort, Nutzer, Zeitfenster, Bereitstellung/Pflege und Prüfverantwortung mit den Folgegewerken abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_03_applicable_yes" name="e32_03_applicable" value="yes" onchange="updateE32_03()">
+                            <label for="e32_03_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_03_applicable_no" name="e32_03_applicable" value="no" onchange="updateE32_03()">
+                            <label for="e32_03_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_03_applicable_unclear" name="e32_03_applicable" value="unclear" onchange="updateE32_03()">
+                            <label for="e32_03_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e32_03_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_03_status_open" name="e32_03_status" value="open" onchange="updateE32_03()">
+                                <label for="e32_03_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_03_status_compliant" name="e32_03_status" value="compliant" onchange="updateE32_03()">
+                                <label for="e32_03_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_03_status_non_compliant" name="e32_03_status" value="non_compliant" onchange="updateE32_03()">
+                                <label for="e32_03_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e32_03_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e32_03_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e32_03_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e32_03_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e32_03_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e32_03_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e32_03_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e32_03')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e32_03_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e32_03_lat">-</span><br>
+                                Länge: <span id="e32_03_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e32_03_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e32_03_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e32_03')">
+                            </div>
+                            <div class="file-preview" id="e32_03_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e32_03_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 04 -->
+            <div class="form-section">
+                <div class="item-title">04 Spätere Arbeiten und Zugänge prüfen (RAB 32) [Planung]</div>
+                <div class="item-description">
+                    Lage und Tiefe der Leitungen, verbleibende Bauteile und sichere Zugänge für spätere Aufgrabungen dokumentieren. Bauteil, vorhersehbare Tätigkeit, sicheren Zugang, Intervall und Empfänger konkret abgleichen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_04_applicable_yes" name="e32_04_applicable" value="yes" onchange="updateE32_04()">
+                            <label for="e32_04_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_04_applicable_no" name="e32_04_applicable" value="no" onchange="updateE32_04()">
+                            <label for="e32_04_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e32_04_applicable_unclear" name="e32_04_applicable" value="unclear" onchange="updateE32_04()">
+                            <label for="e32_04_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e32_04_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_04_status_open" name="e32_04_status" value="open" onchange="updateE32_04()">
+                                <label for="e32_04_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_04_status_compliant" name="e32_04_status" value="compliant" onchange="updateE32_04()">
+                                <label for="e32_04_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e32_04_status_non_compliant" name="e32_04_status" value="non_compliant" onchange="updateE32_04()">
+                                <label for="e32_04_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e32_04_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e32_04_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e32_04_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e32_04_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e32_04_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e32_04_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e32_04_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e32_04')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e32_04_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e32_04_lat">-</span><br>
+                                Länge: <span id="e32_04_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e32_04_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e32_04_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e32_04')">
+                            </div>
+                            <div class="file-preview" id="e32_04_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e32_04_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="separator"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><strong>Prüfung / Freigabe:</strong></label>
+                        <input type="text" id="e32_signature" placeholder="Name und Titel">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Datum / Unterschrift:</strong></label>
+                        <input type="date" id="e32_signature_date">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn-success" onclick="saveE32()">💾 E32 Speichern</button>
+                    <button class="btn-secondary" onclick="resetE32()">🔄 Zurücksetzen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- E33: Arbeiten nahe Hochspannungsleitungen -->
+        <div id="e33" class="tab-content">
+            <div class="form-section">
+                <div class="item-title">E33 · Arbeiten nahe Hochspannungsleitungen</div>
+                <div class="item-description">
+                    <strong>Modul-Info:</strong> Aktivierung durch Bauelement "Ja". Bezug: BetrSichV §§3–4; TRBS 2121; ASR A2.1
+                </div>
+
+                <!-- Item 01 -->
+                <div class="separator"></div>
+                <div class="item-title">01 Elektrische Gefährdung mit Netzbetreiber klären [Planung]</div>
+                <div class="item-description">
+                    Spannung, Arbeits-/Bewegungsraum, Schutzabstände und erforderlichen Anlagenzustand verbindlich abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_01_applicable_yes" name="e33_01_applicable" value="yes" onchange="updateE33_01()">
+                            <label for="e33_01_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_01_applicable_no" name="e33_01_applicable" value="no" onchange="updateE33_01()">
+                            <label for="e33_01_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_01_applicable_unclear" name="e33_01_applicable" value="unclear" onchange="updateE33_01()">
+                            <label for="e33_01_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e33_01_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_01_status_open" name="e33_01_status" value="open" onchange="updateE33_01()">
+                                <label for="e33_01_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_01_status_compliant" name="e33_01_status" value="compliant" onchange="updateE33_01()">
+                                <label for="e33_01_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_01_status_non_compliant" name="e33_01_status" value="non_compliant" onchange="updateE33_01()">
+                                <label for="e33_01_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e33_01_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e33_01_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e33_01_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e33_01_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e33_01_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e33_01_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e33_01_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e33_01')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e33_01_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e33_01_lat">-</span><br>
+                                Länge: <span id="e33_01_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e33_01_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e33_01_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e33_01')">
+                            </div>
+                            <div class="file-preview" id="e33_01_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e33_01_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 02 -->
+            <div class="form-section">
+                <div class="item-title">02 Freigabe und Abstände kontrollieren [Ausführung]</div>
+                <div class="item-description">
+                    Vor Ort wirksame Begrenzungen und bestätigten Schaltzustand prüfen; 5 m nicht als allgemeine sichere Entfernung verwenden.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_02_applicable_yes" name="e33_02_applicable" value="yes" onchange="updateE33_02()">
+                            <label for="e33_02_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_02_applicable_no" name="e33_02_applicable" value="no" onchange="updateE33_02()">
+                            <label for="e33_02_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_02_applicable_unclear" name="e33_02_applicable" value="unclear" onchange="updateE33_02()">
+                            <label for="e33_02_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e33_02_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_02_status_open" name="e33_02_status" value="open" onchange="updateE33_02()">
+                                <label for="e33_02_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_02_status_compliant" name="e33_02_status" value="compliant" onchange="updateE33_02()">
+                                <label for="e33_02_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_02_status_non_compliant" name="e33_02_status" value="non_compliant" onchange="updateE33_02()">
+                                <label for="e33_02_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e33_02_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e33_02_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e33_02_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e33_02_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e33_02_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e33_02_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e33_02_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e33_02')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e33_02_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e33_02_lat">-</span><br>
+                                Länge: <span id="e33_02_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e33_02_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e33_02_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e33_02')">
+                            </div>
+                            <div class="file-preview" id="e33_02_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e33_02_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 03 -->
+            <div class="form-section">
+                <div class="item-title">03 Gemeinsame Einrichtungen und Übergabe prüfen [Planung]</div>
+                <div class="item-description">
+                    Für Seitenschutz, Öffnungsabdeckung, Gerüst/Zugang und Sperrbereiche Standort, Nutzer, Zeitfenster, Bereitstellung/Pflege und Prüfverantwortung mit den Folgegewerken abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_03_applicable_yes" name="e33_03_applicable" value="yes" onchange="updateE33_03()">
+                            <label for="e33_03_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_03_applicable_no" name="e33_03_applicable" value="no" onchange="updateE33_03()">
+                            <label for="e33_03_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_03_applicable_unclear" name="e33_03_applicable" value="unclear" onchange="updateE33_03()">
+                            <label for="e33_03_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e33_03_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_03_status_open" name="e33_03_status" value="open" onchange="updateE33_03()">
+                                <label for="e33_03_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_03_status_compliant" name="e33_03_status" value="compliant" onchange="updateE33_03()">
+                                <label for="e33_03_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_03_status_non_compliant" name="e33_03_status" value="non_compliant" onchange="updateE33_03()">
+                                <label for="e33_03_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e33_03_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e33_03_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e33_03_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e33_03_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e33_03_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e33_03_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e33_03_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e33_03')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e33_03_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e33_03_lat">-</span><br>
+                                Länge: <span id="e33_03_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e33_03_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e33_03_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e33_03')">
+                            </div>
+                            <div class="file-preview" id="e33_03_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e33_03_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 04 -->
+            <div class="form-section">
+                <div class="item-title">04 Spätere Arbeiten und Zugänge prüfen (RAB 32) [Planung]</div>
+                <div class="item-description">
+                    Dauerhafte Wartungszugänge, Absturzsicherungen und zulässige Belastungen dokumentieren. Bauteil, vorhersehbare Tätigkeit, sicheren Zugang, Intervall und Empfänger konkret abgleichen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_04_applicable_yes" name="e33_04_applicable" value="yes" onchange="updateE33_04()">
+                            <label for="e33_04_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_04_applicable_no" name="e33_04_applicable" value="no" onchange="updateE33_04()">
+                            <label for="e33_04_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e33_04_applicable_unclear" name="e33_04_applicable" value="unclear" onchange="updateE33_04()">
+                            <label for="e33_04_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e33_04_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_04_status_open" name="e33_04_status" value="open" onchange="updateE33_04()">
+                                <label for="e33_04_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_04_status_compliant" name="e33_04_status" value="compliant" onchange="updateE33_04()">
+                                <label for="e33_04_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e33_04_status_non_compliant" name="e33_04_status" value="non_compliant" onchange="updateE33_04()">
+                                <label for="e33_04_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e33_04_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e33_04_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e33_04_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e33_04_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e33_04_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e33_04_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e33_04_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e33_04')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e33_04_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e33_04_lat">-</span><br>
+                                Länge: <span id="e33_04_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e33_04_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e33_04_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e33_04')">
+                            </div>
+                            <div class="file-preview" id="e33_04_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e33_04_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="separator"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><strong>Prüfung / Freigabe:</strong></label>
+                        <input type="text" id="e33_signature" placeholder="Name und Titel">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Datum / Unterschrift:</strong></label>
+                        <input type="date" id="e33_signature_date">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn-success" onclick="saveE33()">💾 E33 Speichern</button>
+                    <button class="btn-secondary" onclick="resetE33()">🔄 Zurücksetzen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- E34: Gleisbereich / Bahnbetrieb -->
+        <div id="e34" class="tab-content">
+            <div class="form-section">
+                <div class="item-title">E34 · Gleisbereich / Bahnbetrieb</div>
+                <div class="item-description">
+                    <strong>Modul-Info:</strong> Aktivierung durch Bauelement "Ja". Bezug: DGUV Vorschrift 78; Betreiber-Sicherungsanweisung
+                </div>
+
+                <!-- Item 01 -->
+                <div class="separator"></div>
+                <div class="item-title">01 Arbeiten mit Bahnbetrieb abstimmen [Planung]</div>
+                <div class="item-description">
+                    Gleis-/Fahrleitungszustände, Sicherungsmaßnahmen, Zugänge und Sperrzeiten vom Betreiber festlegen lassen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_01_applicable_yes" name="e34_01_applicable" value="yes" onchange="updateE34_01()">
+                            <label for="e34_01_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_01_applicable_no" name="e34_01_applicable" value="no" onchange="updateE34_01()">
+                            <label for="e34_01_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_01_applicable_unclear" name="e34_01_applicable" value="unclear" onchange="updateE34_01()">
+                            <label for="e34_01_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e34_01_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_01_status_open" name="e34_01_status" value="open" onchange="updateE34_01()">
+                                <label for="e34_01_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_01_status_compliant" name="e34_01_status" value="compliant" onchange="updateE34_01()">
+                                <label for="e34_01_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_01_status_non_compliant" name="e34_01_status" value="non_compliant" onchange="updateE34_01()">
+                                <label for="e34_01_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e34_01_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e34_01_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e34_01_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e34_01_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e34_01_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e34_01_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e34_01_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e34_01')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e34_01_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e34_01_lat">-</span><br>
+                                Länge: <span id="e34_01_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e34_01_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e34_01_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e34_01')">
+                            </div>
+                            <div class="file-preview" id="e34_01_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e34_01_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 02 -->
+            <div class="form-section">
+                <div class="item-title">02 Sicherungsmaßnahmen vor Zutritt prüfen [Ausführung]</div>
+                <div class="item-description">
+                    Verantwortlichen, geltenden Betriebszustand, Sicherung und Kommunikationsweg bestätigen lassen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_02_applicable_yes" name="e34_02_applicable" value="yes" onchange="updateE34_02()">
+                            <label for="e34_02_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_02_applicable_no" name="e34_02_applicable" value="no" onchange="updateE34_02()">
+                            <label for="e34_02_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_02_applicable_unclear" name="e34_02_applicable" value="unclear" onchange="updateE34_02()">
+                            <label for="e34_02_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e34_02_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_02_status_open" name="e34_02_status" value="open" onchange="updateE34_02()">
+                                <label for="e34_02_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_02_status_compliant" name="e34_02_status" value="compliant" onchange="updateE34_02()">
+                                <label for="e34_02_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_02_status_non_compliant" name="e34_02_status" value="non_compliant" onchange="updateE34_02()">
+                                <label for="e34_02_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e34_02_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e34_02_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e34_02_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e34_02_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e34_02_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e34_02_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e34_02_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e34_02')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e34_02_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e34_02_lat">-</span><br>
+                                Länge: <span id="e34_02_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e34_02_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e34_02_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e34_02')">
+                            </div>
+                            <div class="file-preview" id="e34_02_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e34_02_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 03 -->
+            <div class="form-section">
+                <div class="item-title">03 Gemeinsame Einrichtungen und Übergabe prüfen [Planung]</div>
+                <div class="item-description">
+                    Für Bahnbetriebliche Sicherung und sichere Zugänge Standort, Nutzer, Zeitfenster, Bereitstellung/Pflege und Prüfverantwortung mit den Folgegewerken abstimmen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_03_applicable_yes" name="e34_03_applicable" value="yes" onchange="updateE34_03()">
+                            <label for="e34_03_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_03_applicable_no" name="e34_03_applicable" value="no" onchange="updateE34_03()">
+                            <label for="e34_03_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_03_applicable_unclear" name="e34_03_applicable" value="unclear" onchange="updateE34_03()">
+                            <label for="e34_03_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e34_03_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_03_status_open" name="e34_03_status" value="open" onchange="updateE34_03()">
+                                <label for="e34_03_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_03_status_compliant" name="e34_03_status" value="compliant" onchange="updateE34_03()">
+                                <label for="e34_03_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_03_status_non_compliant" name="e34_03_status" value="non_compliant" onchange="updateE34_03()">
+                                <label for="e34_03_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e34_03_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e34_03_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e34_03_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e34_03_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e34_03_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e34_03_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e34_03_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e34_03')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e34_03_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e34_03_lat">-</span><br>
+                                Länge: <span id="e34_03_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e34_03_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e34_03_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e34_03')">
+                            </div>
+                            <div class="file-preview" id="e34_03_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e34_03_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 04 -->
+            <div class="form-section">
+                <div class="item-title">04 Spätere Arbeiten und Zugänge prüfen (RAB 32) [Planung]</div>
+                <div class="item-description">
+                    Sicheren Zugang und relevante Bestandsinformationen für Wartung und Instandsetzung dokumentieren. Bauteil, vorhersehbare Tätigkeit, sicheren Zugang, Intervall und Empfänger konkret abgleichen.
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Anwendbarkeit:</strong></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_04_applicable_yes" name="e34_04_applicable" value="yes" onchange="updateE34_04()">
+                            <label for="e34_04_applicable_yes">Ja</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_04_applicable_no" name="e34_04_applicable" value="no" onchange="updateE34_04()">
+                            <label for="e34_04_applicable_no">Nein</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" id="e34_04_applicable_unclear" name="e34_04_applicable" value="unclear" onchange="updateE34_04()">
+                            <label for="e34_04_applicable_unclear">Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e34_04_content" class="conditional-field">
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_04_status_open" name="e34_04_status" value="open" onchange="updateE34_04()">
+                                <label for="e34_04_status_open">Offen</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_04_status_compliant" name="e34_04_status" value="compliant" onchange="updateE34_04()">
+                                <label for="e34_04_status_compliant">Erfüllt</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" id="e34_04_status_non_compliant" name="e34_04_status" value="non_compliant" onchange="updateE34_04()">
+                                <label for="e34_04_status_non_compliant">Nicht erfüllt</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="e34_04_action_plan" class="conditional-field">
+                        <div class="form-group">
+                            <label><strong>Maßnahmenplan zur Behebung:</strong></label>
+                            <textarea id="e34_04_action" placeholder="Beschreiben Sie die erforderlichen Maßnahmen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>Verantwortlich:</strong></label>
+                            <input type="text" id="e34_04_responsible" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frist:</strong></label>
+                            <input type="date" id="e34_04_deadline">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Geprüft am:</strong></label>
+                        <input type="date" id="e34_04_checked_date">
+                    </div>
+
+                    <div class="evidence-section">
+                        <div class="evidence-title">📸 Fotographische Evidenz</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum:</label>
+                                <input type="date" id="e34_04_photo_date">
+                            </div>
+                            <div class="form-group">
+                                <label>Uhrzeit:</label>
+                                <input type="time" id="e34_04_photo_time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Geografische Position:</label>
+                            <button type="button" class="btn-primary btn-small" onclick="getLocation('e34_04')">
+                                📍 Aktuelle Position
+                            </button>
+                            <div id="e34_04_location" class="location-info" style="display:none; margin-top:10px;">
+                                Breite: <span id="e34_04_lat">-</span><br>
+                                Länge: <span id="e34_04_lon">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bilder hochladen:</label>
+                            <div class="file-input-wrapper">
+                                <label for="e34_04_photos" class="file-input-label">
+                                    📷 Bilder auswählen (mehrfach möglich)
+                                </label>
+                                <input type="file" id="e34_04_photos" multiple accept="image/*" onchange="handleFileSelect(event, 'e34_04')">
+                            </div>
+                            <div class="file-preview" id="e34_04_preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Notizen / Bemerkungen:</strong></label>
+                        <textarea id="e34_04_notes" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="separator"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><strong>Prüfung / Freigabe:</strong></label>
+                        <input type="text" id="e34_signature" placeholder="Name und Titel">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Datum / Unterschrift:</strong></label>
+                        <input type="date" id="e34_signature_date">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn-success" onclick="saveE34()">💾 E34 Speichern</button>
+                    <button class="btn-secondary" onclick="resetE34()">🔄 Zurücksetzen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Tab -->
+        <div id="export" class="tab-content">
+            <div class="export-section">
+                <h2>📤 Datenexport und Bericht</h2>
+                <p>Exportieren Sie Ihre Checklisten-Daten in verschiedenen Formaten oder drucken Sie einen vollständigen Bericht.</p>
+                
+                <div class="separator"></div>
+
+                <h3>Exportoptionen:</h3>
+                <div class="export-buttons">
+                    <button class="btn-primary" onclick="exportToJSON()">📄 JSON Export</button>
+                    <button class="btn-primary" onclick="exportToCSV()">📊 CSV Export</button>
+                    <button class="btn-primary" onclick="generatePDF()">📕 PDF-Bericht</button>
+                    <button class="btn-secondary" onclick="printReport()">🖨️ Drucken</button>
+                </div>
+
+                <div class="separator"></div>
+
+                <h3>Verwaltung:</h3>
+                <div class="export-buttons">
+                    <button class="btn-secondary" onclick="clearAllData()">🗑️ Alle Daten löschen</button>
+                    <button class="btn-secondary" onclick="downloadBackup()">💾 Backup laden</button>
+                </div>
+
+                <div id="statusMessage" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store for file data
+        const fileStore = {};
+
+        // Initialize app
+        function initApp() {
+            loadFromLocalStorage();
+            updateSummary();
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Get geolocation
+        function getLocation(itemId) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lon = position.coords.longitude.toFixed(6);
+                        
+                        document.getElementById(itemId + '_lat').textContent = lat;
+                        document.getElementById(itemId + '_lon').textContent = lon;
+                        document.getElementById(itemId + '_location').style.display = 'block';
+                        
+                        // Set date and time automatically
+                        const now = new Date();
+                        document.getElementById(itemId + '_photo_date').valueAsDate = now;
+                        document.getElementById(itemId + '_photo_time').value = 
+                            now.getHours().toString().padStart(2, '0') + ':' + 
+                            now.getMinutes().toString().padStart(2, '0');
+                    },
+                    function(error) {
+                        alert('Fehler beim Abrufen der Position: ' + error.message);
+                    }
+                );
+            } else {
+                alert('Geolocation wird von diesem Browser nicht unterstützt.');
+            }
+        }
+
+        // File handling
+        function handleFileSelect(event, itemId) {
+            const files = event.target.files;
+            if (!fileStore[itemId]) {
+                fileStore[itemId] = [];
+            }
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileStore[itemId].push({
+                        name: file.name,
+                        data: e.target.result
+                    });
+                    updateFilePreview(itemId);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateFilePreview(itemId) {
+            const preview = document.getElementById(itemId + '_preview');
+            preview.innerHTML = '';
+            
+            if (fileStore[itemId]) {
+                fileStore[itemId].forEach((file, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'file-item';
+                    
+                    if (file.data.startsWith('data:image')) {
+                        div.innerHTML = `
+                            <img src="${file.data}" alt="Preview">
+                            <button type="button" class="file-remove" onclick="removeFile('${itemId}', ${index})">×</button>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <div style="padding: 10px; text-align: center; word-break: break-all; font-size: 12px;">
+                                ${file.name}
+                                <button type="button" class="file-remove" onclick="removeFile('${itemId}', ${index})">×</button>
+                            </div>
+                        `;
+                    }
+                    preview.appendChild(div);
+                });
+            }
+        }
+
+        function removeFile(itemId, index) {
+            fileStore[itemId].splice(index, 1);
+            updateFilePreview(itemId);
+        }
+
+        // Conditional field visibility
+        function updateConditionalFields(itemId) {
+            const applicableRadio = document.querySelector(`input[name="${itemId}_applicable"]:checked`);
+            const statusRadio = document.querySelector(`input[name="${itemId}_status"]:checked`);
+            const contentDiv = document.getElementById(itemId + '_content');
+            const actionPlanDiv = document.getElementById(itemId + '_action_plan');
+
+            if (applicableRadio && applicableRadio.value === 'yes') {
+                contentDiv.classList.add('show');
+            } else {
+                contentDiv.classList.remove('show');
+            }
+
+            if (statusRadio && statusRadio.value === 'non_compliant') {
+                actionPlanDiv.classList.add('show');
+            } else {
+                actionPlanDiv.classList.remove('show');
+            }
+        }
+
+        // E31 Update functions
+        function updateE31_01() { updateConditionalFields('e31_01'); }
+        function updateE31_02() { updateConditionalFields('e31_02'); }
+        function updateE31_03() { updateConditionalFields('e31_03'); }
+        function updateE31_04() { updateConditionalFields('e31_04'); }
+
+        // E32 Update functions
+        function updateE32_01() { updateConditionalFields('e32_01'); }
+        function updateE32_02() { updateConditionalFields('e32_02'); }
+        function updateE32_03() { updateConditionalFields('e32_03'); }
+        function updateE32_04() { updateConditionalFields('e32_04'); }
+
+        // E33 Update functions
+        function updateE33_01() { updateConditionalFields('e33_01'); }
+        function updateE33_02() { updateConditionalFields('e33_02'); }
+        function updateE33_03() { updateConditionalFields('e33_03'); }
+        function updateE33_04() { updateConditionalFields('e33_04'); }
+
+        // E34 Update functions
+        function updateE34_01() { updateConditionalFields('e34_01'); }
+        function updateE34_02() { updateConditionalFields('e34_02'); }
+        function updateE34_03() { updateConditionalFields('e34_03'); }
+        function updateE34_04() { updateConditionalFields('e34_04'); }
+
+        // Save functions
+        function saveE31() {
+            saveModule('e31');
+            showMessage('✅ E31 Daten gespeichert!', 'success');
+        }
+
+        function saveE32() {
+            saveModule('e32');
+            showMessage('✅ E32 Daten gespeichert!', 'success');
+        }
+
+        function saveE33() {
+            saveModule('e33');
+            showMessage('✅ E33 Daten gespeichert!', 'success');
+        }
+
+        function saveE34() {
+            saveModule('e34');
+            showMessage('✅ E34 Daten gespeichert!', 'success');
+        }
+
+        function saveModule(moduleId) {
+            const moduleData = {
+                projectName: document.getElementById('projectName').value,
+                projectArea: document.getElementById('projectArea').value,
+                moduleId: moduleId,
+                timestamp: new Date().toISOString(),
+                items: []
+            };
+
+            for (let i = 1; i <= 4; i++) {
+                const itemId = moduleId + '_0' + i;
+                const applicable = document.querySelector(`input[name="${itemId}_applicable"]:checked`)?.value;
+                const status = document.querySelector(`input[name="${itemId}_status"]:checked`)?.value;
+
+                if (applicable) {
+                    moduleData.items.push({
+                        itemId: itemId,
+                        applicable: applicable,
+                        status: status,
+                        action: document.getElementById(itemId + '_action')?.value || '',
+                        responsible: document.getElementById(itemId + '_responsible')?.value || '',
+                        deadline: document.getElementById(itemId + '_deadline')?.value || '',
+                        checkedDate: document.getElementById(itemId + '_checked_date')?.value || '',
+                        photoDate: document.getElementById(itemId + '_photo_date')?.value || '',
+                        photoTime: document.getElementById(itemId + '_photo_time')?.value || '',
+                        latitude: document.getElementById(itemId + '_lat')?.textContent || '',
+                        longitude: document.getElementById(itemId + '_lon')?.textContent || '',
+                        notes: document.getElementById(itemId + '_notes')?.value || '',
+                        files: fileStore[itemId] || []
+                    });
+                }
+            }
+
+            // Save to localStorage
+            const allData = JSON.parse(localStorage.getItem('checklistData')) || {};
+            allData[moduleId] = moduleData;
+            localStorage.setItem('checklistData', JSON.stringify(allData));
+
+            updateSummary();
+        }
+
+        function resetE31() {
+            if (confirm('Möchten Sie alle E31-Daten wirklich löschen?')) {
+                document.querySelectorAll('input[name^="e31_"], textarea[id^="e31_"]').forEach(el => {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = false;
+                    } else if (el.type === 'date' || el.type === 'time' || el.tagName === 'TEXTAREA') {
+                        el.value = '';
+                    }
+                });
+                fileStore['e31_01'] = [];
+                fileStore['e31_02'] = [];
+                fileStore['e31_03'] = [];
+                fileStore['e31_04'] = [];
+                document.querySelectorAll('[id$="_preview"]').forEach(div => {
+                    if (div.id.startsWith('e31')) div.innerHTML = '';
+                });
+                showMessage('🔄 E31 Formular zurückgesetzt', 'info');
+            }
+        }
+
+        function resetE32() {
+            if (confirm('Möchten Sie alle E32-Daten wirklich löschen?')) {
+                document.querySelectorAll('input[name^="e32_"], textarea[id^="e32_"]').forEach(el => {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = false;
+                    } else if (el.type === 'date' || el.type === 'time' || el.tagName === 'TEXTAREA') {
+                        el.value = '';
+                    }
+                });
+                fileStore['e32_01'] = [];
+                fileStore['e32_02'] = [];
+                fileStore['e32_03'] = [];
+                fileStore['e32_04'] = [];
+                document.querySelectorAll('[id$="_preview"]').forEach(div => {
+                    if (div.id.startsWith('e32')) div.innerHTML = '';
+                });
+                showMessage('🔄 E32 Formular zurückgesetzt', 'info');
+            }
+        }
+
+        function resetE33() {
+            if (confirm('Möchten Sie alle E33-Daten wirklich löschen?')) {
+                document.querySelectorAll('input[name^="e33_"], textarea[id^="e33_"]').forEach(el => {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = false;
+                    } else if (el.type === 'date' || el.type === 'time' || el.tagName === 'TEXTAREA') {
+                        el.value = '';
+                    }
+                });
+                fileStore['e33_01'] = [];
+                fileStore['e33_02'] = [];
+                fileStore['e33_03'] = [];
+                fileStore['e33_04'] = [];
+                document.querySelectorAll('[id$="_preview"]').forEach(div => {
+                    if (div.id.startsWith('e33')) div.innerHTML = '';
+                });
+                showMessage('🔄 E33 Formular zurückgesetzt', 'info');
+            }
+        }
+
+        function resetE34() {
+            if (confirm('Möchten Sie alle E34-Daten wirklich löschen?')) {
+                document.querySelectorAll('input[name^="e34_"], textarea[id^="e34_"]').forEach(el => {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = false;
+                    } else if (el.type === 'date' || el.type === 'time' || el.tagName === 'TEXTAREA') {
+                        el.value = '';
+                    }
+                });
+                fileStore['e34_01'] = [];
+                fileStore['e34_02'] = [];
+                fileStore['e34_03'] = [];
+                fileStore['e34_04'] = [];
+                document.querySelectorAll('[id$="_preview"]').forEach(div => {
+                    if (div.id.startsWith('e34')) div.innerHTML = '';
+                });
+                showMessage('🔄 E34 Formular zurückgesetzt', 'info');
+            }
+        }
+
+        // LocalStorage functions
+        function saveToLocalStorage() {
+            const data = {
+                projectName: document.getElementById('projectName').value,
+                projectArea: document.getElementById('projectArea').value
+            };
+            localStorage.setItem('projectInfo', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const projectInfo = JSON.parse(localStorage.getItem('projectInfo'));
+            if (projectInfo) {
+                document.getElementById('projectName').value = projectInfo.projectName || '';
+                document.getElementById('projectArea').value = projectInfo.projectArea || '';
+            }
+        }
+
+        // Update Summary
+        function updateSummary() {
+            const checklistData = JSON.parse(localStorage.getItem('checklistData')) || {};
+            let totalItems = 0;
+            let compliantItems = 0;
+            let nonCompliantItems = 0;
+            let openItems = 0;
+
+            Object.values(checklistData).forEach(module => {
+                if (module.items) {
+                    module.items.forEach(item => {
+                        totalItems++;
+                        if (item.status === 'compliant') {
+                            compliantItems++;
+                        } else if (item.status === 'non_compliant') {
+                            nonCompliantItems++;
+                        } else if (item.status === 'open') {
+                            openItems++;
+                        }
+                    });
+                }
+            });
+
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('compliantItems').textContent = compliantItems;
+            document.getElementById('nonCompliantItems').textContent = nonCompliantItems;
+            document.getElementById('openItems').textContent = openItems;
+        }
+
+        // Export functions
+        function exportToJSON() {
+            const data = {
+                projectInfo: {
+                    name: document.getElementById('projectName').value,
+                    area: document.getElementById('projectArea').value,
+                    exportDate: new Date().toISOString()
+                },
+                checklists: JSON.parse(localStorage.getItem('checklistData')) || {}
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            downloadFile(dataStr, 'leitungsbau_checklisten_' + new Date().getTime() + '.json', 'application/json');
+            showMessage('✅ JSON-Export erfolgreich!', 'success');
+        }
+
+        function exportToCSV() {
+            const checklistData = JSON.parse(localStorage.getItem('checklistData')) || {};
+            let csv = 'Projekt,Bereich,Modul,Item,Anwendbar,Status,Verantwortlich,Frist,Geprüft Am,Notizen\n';
+
+            const projectName = document.getElementById('projectName').value;
+            const projectArea = document.getElementById('projectArea').value;
+
+            Object.entries(checklistData).forEach(([moduleId, module]) => {
+                if (module.items) {
+                    module.items.forEach(item => {
+                        csv += `"${projectName}","${projectArea}","${moduleId}","${item.itemId}","${item.applicable}","${item.status}","${item.responsible}","${item.deadline}","${item.checkedDate}","${item.notes}"\n`;
+                    });
+                }
+            });
+
+            downloadFile(csv, 'leitungsbau_checklisten_' + new Date().getTime() + '.csv', 'text/csv');
+            showMessage('✅ CSV-Export erfolgreich!', 'success');
+        }
+
+        function generatePDF() {
+            showMessage('⚠️ PDF-Export wird generiert... Bitte warten!', 'warning');
+            // Note: Für ein vollständiges PDF-Export würde eine Bibliothek wie jsPDF benötigt
+            // Dies ist eine vereinfachte Version
+            setTimeout(() => {
+                window.print();
+                showMessage('✅ PDF kann über den Browser-Druckdialog gespeichert werden!', 'success');
+            }, 500);
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type: type });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ Alle Daten werden dauerhaft gelöscht. Fortfahren?')) {
+                localStorage.clear();
+                Object.keys(fileStore).forEach(key => delete fileStore[key]);
+                document.getElementById('projectName').value = '';
+                document.getElementById('projectArea').value = '';
+                updateSummary();
+                showMessage('🗑️ Alle Daten gelöscht!', 'warning');
+                location.reload();
+            }
+        }
+
+        function downloadBackup() {
+            const backup = JSON.stringify({
+                projectInfo: {
+                    name: document.getElementById('projectName').value,
+                    area: document.getElementById('projectArea').value
+                },
+                data: localStorage.getItem('checklistData')
+            }, null, 2);
+
+            downloadFile(backup, 'leitungsbau_backup_' + new Date().getTime() + '.json', 'application/json');
+            showMessage('💾 Backup erfolgreich heruntergeladen!', 'success');
+        }
+
+        function showMessage(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 4000);
+        }
+
+        // Auto-save on input
+        document.addEventListener('change', function() {
+            saveToLocalStorage();
+            updateSummary();
+        });
+
+        // Initialize
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
